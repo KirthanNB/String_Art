@@ -1,0 +1,146 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap');
+
+@import "tailwindcss";
+
+:root {
+  /* Brand Colors */
+  --color-teal: #00B8A9;
+  --color-pink: #E91E63;
+  --color-orange: #FF6B35;
+  --color-yellow: #FFD23F;
+
+  /* Neutral Colors */
+  --color-navy-900: #1A2332;
+  --color-navy-800: #2A3442;
+  --color-navy-700: #3A4552;
+
+  --color-cream-100: #F0EBE6;
+  --color-cream-50: #F8F5F2;
+
+  /* Font Variables */
+  --font-inter: 'Inter', sans-serif;
+  --font-playfair: 'Playfair Display', serif;
+}
+
+@theme {
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-playfair);
+
+  --color-primary-teal: var(--color-teal);
+  --color-primary-pink: var(--color-pink);
+  --color-primary-orange: var(--color-orange);
+  --color-primary-yellow: var(--color-yellow);
+
+  --color-navy-900: var(--color-navy-900);
+  --color-navy-800: var(--color-navy-800);
+  --color-navy-700: var(--color-navy-700);
+
+  --color-cream-100: var(--color-cream-100);
+  --color-cream-50: var(--color-cream-50);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-cream-50);
+  color: var(--color-navy-900);
+  font-family: var(--font-inter);
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-cream-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-navy-700);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--color-pink), var(--color-orange));
+}
+
+@layer utilities {
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-teal via-primary-pink to-primary-orange;
+  }
+
+  .glass {
+    @apply bg-white/70 backdrop-blur-md border-b border-white/20;
+    will-change: backdrop-filter;
+  }
+
+  .magnetic-hover {
+    @apply transition-transform duration-300 ease-out hover:scale-105;
+    will-change: transform;
+  }
+}
+
+/* Noise Texture Overlay - Removed for performance
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+*/
+
+::selection {
+  @apply bg-primary-teal/30 text-navy-900;
+}
+
+/* Mobile Performance Optimizations */
+@media (max-width: 768px) {
+
+  /* Reduce expensive backdrop blur on mobile */
+  .glass {
+    @apply bg-white/80;
+    backdrop-filter: blur(8px);
+  }
+
+  /* Simplify animations on mobile */
+  * {
+    animation-duration: 0.5s !important;
+    transition-duration: 0.3s !important;
+  }
+
+  /* Performance hints */
+  .container {
+    contain: layout style paint;
+  }
+
+  /* Reduce transform complexity */
+  .perspective-1000 {
+    perspective: none;
+  }
+
+  .transform-style-3d {
+    transform-style: flat;
+  }
+}
+
+/* Touch target improvements */
+@media (hover: none) and (pointer: coarse) {
+
+  button,
+  a,
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
