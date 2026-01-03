@@ -3,12 +3,32 @@
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import ProductGallery from '@/components/ProductGallery';
-import ProcessSection from '@/components/ProcessSection';
-import Testimonials from '@/components/Testimonials';
-import InstagramSection from '@/components/InstagramSection';
-import ContactForm from '@/components/ContactForm';
-import Footer from '@/components/Footer';
-import ProcessRingSection from '@/components/ProcessRingSection';
+import dynamic from 'next/dynamic';
+
+// Lazy load below-the-fold components for better performance
+const ProcessSection = dynamic(() => import('@/components/ProcessSection'), {
+  loading: () => <div className="min-h-screen" />,
+});
+
+const Testimonials = dynamic(() => import('@/components/Testimonials'), {
+  loading: () => <div className="min-h-screen" />,
+});
+
+const InstagramSection = dynamic(() => import('@/components/InstagramSection'), {
+  loading: () => <div className="min-h-[50vh]" />,
+});
+
+const ContactForm = dynamic(() => import('@/components/ContactForm'), {
+  loading: () => <div className="min-h-screen" />,
+});
+
+const Footer = dynamic(() => import('@/components/Footer'), {
+  loading: () => <div className="min-h-[30vh]" />,
+});
+
+const ProcessRingSection = dynamic(() => import('@/components/ProcessRingSection'), {
+  loading: () => <div className="min-h-screen" />,
+});
 
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';

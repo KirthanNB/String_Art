@@ -27,7 +27,7 @@ export default function ProcessRingSection() {
     const [isDown, setIsDown] = useState(false);
     const startX = useRef(0);
 
-    // Process reels
+    // Process reels for circular ring display (9 videos for clean UI)
     const processReels = [
         { type: 'video', image: 'https://res.cloudinary.com/dvrbxnmsx/image/upload/v1766287269/43433_mbhlqp.jpg', video: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1766287389/21244_rphe3k.mp4', title: 'String Art Process' },
         { type: 'video', image: 'https://res.cloudinary.com/dvrbxnmsx/image/upload/v1766287298/43464_oxu6fj.jpg', video: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1766287451/2389_edaerv.mp4', title: 'Threading Technique' },
@@ -38,6 +38,13 @@ export default function ProcessRingSection() {
         { type: 'video', image: 'https://res.cloudinary.com/dvrbxnmsx/image/upload/v1766287278/43462_k43cln.jpg', video: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1766287423/43463_b31xbv.mp4', title: 'Quality Check' },
         { type: 'video', image: 'https://res.cloudinary.com/dvrbxnmsx/image/upload/v1766287293/44319_oyszei.jpg', video: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1766287412/83591_ssme9g.mp4', title: 'Finishing Touches' },
         { type: 'video', image: 'https://res.cloudinary.com/dvrbxnmsx/image/upload/v1766287317/84608_x6mdw4.jpg', video: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1766287449/VID_20251220_060832_221_mdegnt.mp4', title: 'Creative Process' },
+    ];
+
+    // All reels including new videos for modal viewer (11 videos total)
+    const allReels = [
+        ...processReels,
+        { type: 'video', image: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1767458949/VN20260103_130725_w2rhey.jpg', video: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1767458949/VN20260103_130725_w2rhey.mp4', title: 'New Creation' },
+        { type: 'video', image: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1767458847/VID-20260103-WA0069_qda8gx.jpg', video: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1767458847/VID-20260103-WA0069_qda8gx.mp4', title: 'Latest Work' },
     ];
 
     const handleReelClick = (item, index) => {
@@ -139,7 +146,7 @@ export default function ProcessRingSection() {
             if (e.key === 'ArrowUp' && currentIndex > 0) {
                 scrollToReel(currentIndex - 1);
             }
-            if (e.key === 'ArrowDown' && currentIndex < processReels.length - 1) {
+            if (e.key === 'ArrowDown' && currentIndex < allReels.length - 1) {
                 scrollToReel(currentIndex + 1);
             }
             if (e.key === 'Escape') closeModal();
@@ -160,10 +167,10 @@ export default function ProcessRingSection() {
         const threshold = 100;
         if (info.offset.x > threshold) {
             // Swipe Right (Previous)
-            setCardStackIndex((prev) => (prev > 0 ? prev - 1 : processReels.length - 1));
+            setCardStackIndex((prev) => (prev > 0 ? prev - 1 : allReels.length - 1));
         } else if (info.offset.x < -threshold) {
             // Swipe Left (Next)
-            setCardStackIndex((prev) => (prev < processReels.length - 1 ? prev + 1 : 0));
+            setCardStackIndex((prev) => (prev < allReels.length - 1 ? prev + 1 : 0));
         }
     };
 
@@ -222,7 +229,7 @@ export default function ProcessRingSection() {
                             }}
                             style={{ width: "max-content" }}
                         >
-                            {[...processReels, ...processReels].map((reel, index) => (
+                            {[...allReels, ...allReels].map((reel, index) => (
                                 <div
                                     key={`${reel.title}-${index}`}
                                     className="relative w-[260px] h-[400px] flex-shrink-0 rounded-2xl overflow-hidden border-4 border-white/10 shadow-2xl"
@@ -242,7 +249,7 @@ export default function ProcessRingSection() {
 
                                     {/* Number */}
                                     <div className="absolute top-4 left-4 text-white/10 text-6xl font-bold z-0">
-                                        {((index % processReels.length) + 1).toString().padStart(2, '0')}
+                                        {((index % allReels.length) + 1).toString().padStart(2, '0')}
                                     </div>
                                 </div>
                             ))}
@@ -283,7 +290,7 @@ export default function ProcessRingSection() {
                 className="text-center mt-8 space-y-4 relative z-50"
             >
                 <button
-                    onClick={() => handleReelClick(processReels[0], 0)}
+                    onClick={() => handleReelClick(allReels[0], 0)}
                     className="-translate-y-30 inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary-teal to-primary-pink text-white font-bold rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300"
                 >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -323,7 +330,7 @@ export default function ProcessRingSection() {
                                 msOverflowStyle: 'none',
                             }}
                         >
-                            {processReels.map((reel, index) => (
+                            {allReels.map((reel, index) => (
                                 <div
                                     key={index}
                                     data-index={index}

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 
 // Dynamically import ReelViewer
 const ReelViewer = dynamic(() => import('./ReelViewer'), { ssr: false });
@@ -22,6 +23,8 @@ export default function ReelSection() {
         { id: 6, src: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1766287427/43445_kptlcz.mp4', title: 'Creative Process', description: 'From concept to completion', thumbnail: '/77039.jpg' },
         { id: 7, src: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1766287423/43463_b31xbv.mp4', title: 'Masterpiece Making', description: 'Handcrafted with love', thumbnail: '/84608.jpg' },
         { id: 8, src: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1766287412/83591_ssme9g.mp4', title: 'Final Showcase', description: 'The finished artwork', thumbnail: '/1721.jpg' },
+        { id: 9, src: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1767458949/VN20260103_130725_w2rhey.mp4', title: 'New Creation', description: 'Latest string art work', thumbnail: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1767458949/VN20260103_130725_w2rhey.jpg' },
+        { id: 10, src: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1767458847/VID-20260103-WA0069_qda8gx.mp4', title: 'Latest Work', description: 'Fresh from our studio', thumbnail: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1767458847/VID-20260103-WA0069_qda8gx.jpg' },
     ];
 
     const openViewer = (index) => {
@@ -62,7 +65,7 @@ export default function ReelSection() {
 
                     {/* Reel Preview Grid */}
                     <div className={`grid ${isMobile ? 'grid-cols-2 gap-4' : 'grid-cols-4 gap-6'} max-w-5xl mx-auto mb-12`}>
-                        {reels.slice(0, 4).map((reel, index) => (
+                        {reels.map((reel, index) => (
                             <motion.div
                                 key={reel.id}
                                 initial={{ opacity: 0, y: 30 }}
@@ -74,10 +77,13 @@ export default function ReelSection() {
                             >
                                 {/* Thumbnail */}
                                 <div className="absolute inset-0 bg-navy-800">
-                                    <img
+                                    <Image
                                         src={reel.thumbnail}
                                         alt={reel.title}
-                                        className="w-full h-full object-cover"
+                                        fill
+                                        sizes="(max-width: 768px) 50vw, 25vw"
+                                        className="object-cover"
+                                        priority={index < 2}
                                     />
                                 </div>
 

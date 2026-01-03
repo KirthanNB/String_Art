@@ -4,6 +4,7 @@ import { ThreeDScrollTriggerContainer, ThreeDScrollTriggerRow } from './ThreeDSc
 import { motion } from 'framer-motion';
 import { useRef, useEffect } from 'react';
 import GoldenThreadDivider from './GoldenThreadDivider';
+import Image from 'next/image';
 
 export default function Testimonials() {
     const textReviews = [
@@ -51,6 +52,12 @@ export default function Testimonials() {
             url: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/q_auto:low,w_300/v1766293056/84845_1_tdzkhg.mp4',
             poster: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/so_0,w_300/v1766293056/84845_1_tdzkhg.jpg'
         },
+        {
+            id: 'v4',
+            type: 'video',
+            url: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/q_auto:low,w_300/v1767458847/VID-20260103-WA0069_qda8gx.mp4',
+            poster: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/so_0,w_300/v1767458847/VID-20260103-WA0069_qda8gx.jpg'
+        },
     ];
 
     // Lazy video component
@@ -71,7 +78,7 @@ export default function Testimonials() {
                         }
                     });
                 },
-                { threshold: 0.3 }
+                { threshold: 0.5 }
             );
 
             observer.observe(video);
@@ -146,13 +153,14 @@ export default function Testimonials() {
                             return (
                                 <div
                                     key={item.id}
-                                    className="mx-3 w-[320px] h-[380px] rounded-2xl overflow-hidden border-4 border-white/30 shadow-2xl bg-navy-800 flex-shrink-0"
+                                    className="mx-3 w-[320px] h-[380px] rounded-2xl overflow-hidden border-4 border-white/30 shadow-2xl bg-navy-800 flex-shrink-0 relative"
                                 >
-                                    <img
+                                    <Image
                                         src={item.url}
                                         alt="Customer review"
-                                        className="w-full h-full object-cover"
-                                        loading="lazy"
+                                        fill
+                                        sizes="320px"
+                                        className="object-cover"
                                     />
                                 </div>
                             );

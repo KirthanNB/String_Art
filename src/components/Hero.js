@@ -3,8 +3,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import ThreadCanvas from './ThreadCanvas';
+import dynamic from 'next/dynamic';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
+
+// Dynamically import ThreadCanvas for better performance
+const ThreadCanvas = dynamic(() => import('./ThreadCanvas'), {
+    ssr: false,
+    loading: () => null,
+});
 
 const words = ["Memories", "Moments", "Stories", "Vision"];
 
@@ -28,8 +34,8 @@ export default function Hero() {
     const x = useMotionValue(0);
     const yTilt = useMotionValue(0);
 
-    const mouseX = useSpring(x, { stiffness: 150, damping: 15 });
-    const mouseY = useSpring(yTilt, { stiffness: 150, damping: 15 });
+    const mouseX = useSpring(x, { stiffness: 100, damping: 20 });
+    const mouseY = useSpring(yTilt, { stiffness: 100, damping: 20 });
 
     const rotateX = useTransform(mouseY, [-0.5, 0.5], ["7deg", "-7deg"]);
     const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-7deg", "7deg"]);
@@ -86,8 +92,7 @@ export default function Hero() {
     return (
         <div className="min-h-screen bg-orange-50 font-sans text-slate-900">
             <style>{`
-            @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
-            .font-display { font-family: 'Playfair Display', serif; }
+            .font-display { font-family: var(--font-playfair), serif; }
             .text-navy-900 { color: #0f172a; }
             .bg-cream-50 { background-color: #fff7ed; }
             .perspective-1000 { perspective: 1000px; }

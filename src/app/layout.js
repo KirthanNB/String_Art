@@ -6,12 +6,14 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
+  preload: true,
 });
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-playfair",
   display: "swap",
+  preload: true,
 });
 
 export const metadata = {
@@ -19,6 +21,11 @@ export const metadata = {
   description: "Transform your memories into stunning string art. Custom face portraits, and personalized string art creations delivered to your door.",
   keywords: "string art, custom string art, face portraits, geometric art, personalized gifts, handmade art",
   authors: [{ name: "Versatile String Art" }],
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 5,
+  },
   openGraph: {
     title: "Versatile String Art - Custom String Art Creations",
     description: "Transform your memories into stunning string art",
@@ -32,6 +39,11 @@ import { Analytics } from "@vercel/analytics/next";
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
+      <head>
+        {/* Preconnect to Cloudinary CDN for faster resource loading */}
+        <link rel="preconnect" href="https://res.cloudinary.com" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+      </head>
       <body className="antialiased">
         {children}
         <FloatingContactButton />

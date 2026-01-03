@@ -34,6 +34,8 @@ export default function ProductGallery() {
         { id: 12, title: 'Quality Check', image: 'https://res.cloudinary.com/dvrbxnmsx/image/upload/w_600,q_auto:low/v1766287278/43462_k43cln.jpg', video: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/q_auto:low,w_600/v1766287423/43463_b31xbv.mp4', type: 'video', description: 'Quality inspection process' },
         { id: 13, title: 'Premium Art', image: 'https://res.cloudinary.com/dvrbxnmsx/image/upload/w_600,q_auto:low/v1766287302/77039_nv2szk.jpg', type: 'image', description: 'High-end string art piece' },
         { id: 14, title: 'Finishing Touches', image: 'https://res.cloudinary.com/dvrbxnmsx/image/upload/w_600,q_auto:low/v1766287293/44319_oyszei.jpg', video: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/q_auto:low,w_600/v1766287412/83591_ssme9g.mp4', type: 'video', description: 'Final refinements' },
+        { id: 15, title: 'New Creation', image: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1767458949/VN20260103_130725_w2rhey.jpg', video: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1767458949/VN20260103_130725_w2rhey.mp4', type: 'video', description: 'Latest string art work' },
+        { id: 16, title: 'Latest Work', image: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1767458847/VID-20260103-WA0069_qda8gx.jpg', video: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1767458847/VID-20260103-WA0069_qda8gx.mp4', type: 'video', description: 'Fresh from our studio' },
     ];
 
     // Map products to DomeGallery format (src, alt)
