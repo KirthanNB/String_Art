@@ -5,7 +5,6 @@ const nextConfig = {
   poweredByHeader: false,
 
   // Modern output
-  swcMinify: true,
 
   // Experimental features for better performance
   experimental: {

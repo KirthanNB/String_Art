@@ -27,8 +27,15 @@ export default function ProcessRingSection() {
     const [isDown, setIsDown] = useState(false);
     const startX = useRef(0);
 
+    // Helper to inject Cloudinary params
+    const optimizeUrl = (url, width) => {
+        if (!url || !url.includes('cloudinary')) return url;
+        // Insert params after /upload/
+        return url.replace('/upload/', `/upload/w_${width},q_auto,f_auto/`);
+    };
+
     // Process reels for circular ring display (9 videos for clean UI)
-    const processReels = [
+    const rawProcessReels = [
         { type: 'video', image: 'https://res.cloudinary.com/dvrbxnmsx/image/upload/v1766287269/43433_mbhlqp.jpg', video: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1766287389/21244_rphe3k.mp4', title: 'String Art Process' },
         { type: 'video', image: 'https://res.cloudinary.com/dvrbxnmsx/image/upload/v1766287298/43464_oxu6fj.jpg', video: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1766287451/2389_edaerv.mp4', title: 'Threading Technique' },
         { type: 'video', image: 'https://res.cloudinary.com/dvrbxnmsx/image/upload/v1766287260/49603_brf4ny.jpg', video: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1766287420/43418_ikvmuk.mp4', title: 'Assembly Stage' },
@@ -40,11 +47,25 @@ export default function ProcessRingSection() {
         { type: 'video', image: 'https://res.cloudinary.com/dvrbxnmsx/image/upload/v1766287317/84608_x6mdw4.jpg', video: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1766287449/VID_20251220_060832_221_mdegnt.mp4', title: 'Creative Process' },
     ];
 
+    const processReels = rawProcessReels.map(reel => ({
+        ...reel,
+        thumb: optimizeUrl(reel.image, 500),
+        image: optimizeUrl(reel.image, 1200) // Optimize the full image too
+    }));
+
     // All reels including new videos for modal viewer (11 videos total)
-    const allReels = [
-        ...processReels,
+    const rawNewReels = [
         { type: 'video', image: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1767458949/VN20260103_130725_w2rhey.jpg', video: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1767458949/VN20260103_130725_w2rhey.mp4', title: 'New Creation' },
         { type: 'video', image: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1767458847/VID-20260103-WA0069_qda8gx.jpg', video: 'https://res.cloudinary.com/dvrbxnmsx/video/upload/v1767458847/VID-20260103-WA0069_qda8gx.mp4', title: 'Latest Work' },
+    ];
+
+    const allReels = [
+        ...processReels,
+        ...rawNewReels.map(reel => ({
+            ...reel,
+            thumb: optimizeUrl(reel.image, 500),
+            image: optimizeUrl(reel.image, 1200)
+        }))
     ];
 
     const handleReelClick = (item, index) => {

@@ -29,15 +29,23 @@ export default function ThreadCanvas() {
         let width = window.innerWidth;
         let height = window.innerHeight;
 
+        // Simple Seeded Random for Deterministic Threads
+        // Linear Congruential Generator (LCG)
+        let seed = 12345;
+        const random = () => {
+            seed = (seed * 1664525 + 1013904223) % 4294967296;
+            return seed / 4294967296;
+        };
+
         // Device detection for thread count optimization
         const getThreadCount = () => {
             const isMobileDevice = width < 768;
             const isTablet = width >= 768 && width < 1024;
 
             // Reduced thread count for mobile performance
-            if (isMobileDevice) return 18;
-            if (isTablet) return 80;
-            return 150;
+            if (isMobileDevice) return 15; // Further reduced from 18
+            if (isTablet) return 60; // Reduced from 80
+            return 100; // Reduced from 150
         };
 
         // Initialize canvas size
@@ -46,6 +54,8 @@ export default function ThreadCanvas() {
             height = window.innerHeight;
             canvas.width = width;
             canvas.height = height;
+            // Reset seed for consistency on resize (optional, but keeps it stable)
+            seed = 12345;
             initThreads();
         };
 
@@ -59,12 +69,12 @@ export default function ThreadCanvas() {
 
         // Generate a random point on the canvas edge
         const getEdgePoint = () => {
-            const edge = Math.floor(Math.random() * 4); // 0: Top, 1: Right, 2: Bottom, 3: Left
+            const edge = Math.floor(random() * 4); // 0: Top, 1: Right, 2: Bottom, 3: Left
             switch (edge) {
-                case 0: return { x: Math.random() * width, y: -50 }; // Top
-                case 1: return { x: width + 50, y: Math.random() * height }; // Right
-                case 2: return { x: Math.random() * width, y: height + 50 }; // Bottom
-                case 3: return { x: -50, y: Math.random() * height }; // Left
+                case 0: return { x: random() * width, y: -50 }; // Top
+                case 1: return { x: width + 50, y: random() * height }; // Right
+                case 2: return { x: random() * width, y: height + 50 }; // Bottom
+                case 3: return { x: -50, y: random() * height }; // Left
                 default: return { x: 0, y: 0 };
             }
         };
@@ -81,8 +91,10 @@ export default function ThreadCanvas() {
                 // End at a different edge (ensure it crosses the screen somewhat)
                 let end = getEdgePoint();
                 // Simple check to prevent tiny corner clips (e.g. Top to Top)
-                while (Math.abs(start.x - end.x) < width * 0.3 && Math.abs(start.y - end.y) < height * 0.3) {
+                let attempts = 0;
+                while ((Math.abs(start.x - end.x) < width * 0.3 && Math.abs(start.y - end.y) < height * 0.3) && attempts < 5) {
                     end = getEdgePoint();
+                    attempts++;
                 }
 
                 // Midpoint for initial control point
@@ -98,11 +110,11 @@ export default function ThreadCanvas() {
                     // Velocity of control point
                     vx: 0, vy: 0,
                     // Physics properties - GUITAR STRING FEEL
-                    tension: 0.01 + Math.random() * 0.02, // High tension for snap
+                    tension: 0.01 + random() * 0.02, // High tension for snap
                     damping: 0.92, // Low damping for vibration
                     // Visual - Thicker threads on mobile for visibility
-                    color: threadColors[Math.floor(Math.random() * threadColors.length)],
-                    thickness: width < 768 ? 1.5 + Math.random() * 0.5 : 0.5 + Math.random() * 0.5,
+                    color: threadColors[Math.floor(random() * threadColors.length)],
+                    thickness: width < 768 ? 1.5 + random() * 0.5 : 0.5 + random() * 0.5,
                 });
             }
         };
@@ -130,6 +142,8 @@ export default function ThreadCanvas() {
 
         // Main animation loop
         const animate = () => {
+            if (!canvasRef.current) return; // Cleanup check
+
             // Clear canvas with slight trail effect
             ctx.fillStyle = 'rgba(248, 245, 242, 0.4)'; // Clearer trails for sharp vibration
             ctx.fillRect(0, 0, width, height);
@@ -217,8 +231,16 @@ export default function ThreadCanvas() {
         window.addEventListener('mousemove', handleMouseMove);
         window.addEventListener('resize', resizeCanvas);
 
-        // Start animation
-        animate();
+        // Start animation with low priority to allow LCP to finish first
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(() => {
+                animationRef.current = requestAnimationFrame(animate);
+            });
+        } else {
+            setTimeout(() => {
+                animationRef.current = requestAnimationFrame(animate);
+            }, 100);
+        }
 
         // Cleanup
         return () => {

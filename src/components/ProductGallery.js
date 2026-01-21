@@ -39,10 +39,25 @@ export default function ProductGallery() {
     ];
 
     // Map products to DomeGallery format (src, alt)
-    const domeImages = products.map(p => ({
-        src: p.image,
-        alt: p.title
-    }));
+    const domeImages = products.map(p => {
+        // Generate optimized URLs
+        // Default is w_600 from the data
+        let thumb = p.image;
+        let full = p.image;
+
+        if (p.image?.includes('cloudinary')) {
+            // Create thumbnail (w_300 is plenty for the sphere tiles)
+            thumb = p.image.replace('/w_600,', '/w_300,');
+            // Create full size (w_1200 for crisp detail on enlarge)
+            full = p.image.replace('/w_600,', '/w_1200,');
+        }
+
+        return {
+            src: thumb,
+            fullSrc: full,
+            alt: p.title
+        };
+    });
 
     return (
         <section id="gallery" className="min-h-screen flex flex-col justify-center py-16 md:py-32 bg-gradient-to-br from-cream-50 via-primary-teal/5 to-primary-pink/5 relative overflow-visible">

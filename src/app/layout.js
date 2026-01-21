@@ -21,16 +21,17 @@ export const metadata = {
   description: "Transform your memories into stunning string art. Custom face portraits, and personalized string art creations delivered to your door.",
   keywords: "string art, custom string art, face portraits, geometric art, personalized gifts, handmade art",
   authors: [{ name: "Versatile String Art" }],
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-  },
   openGraph: {
     title: "Versatile String Art - Custom String Art Creations",
     description: "Transform your memories into stunning string art",
     type: "website",
   },
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 import { SpeedInsights } from "@vercel/speed-insights/next";

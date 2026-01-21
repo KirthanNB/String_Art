@@ -74,7 +74,7 @@ function buildItems(pool, seg) {
         if (typeof image === 'string') {
             return { src: image, alt: '' };
         }
-        return { src: image.src || '', alt: image.alt || '' };
+        return { src: image.src || '', fullSrc: image.fullSrc || image.src || '', alt: image.alt || '' };
     });
 
     const usedImages = Array.from({ length: totalSlots }, (_, i) => normalizedImages[i % normalizedImages.length]);
@@ -95,6 +95,7 @@ function buildItems(pool, seg) {
     return coords.map((c, i) => ({
         ...c,
         src: usedImages[i].src,
+        fullSrc: usedImages[i].fullSrc,
         alt: usedImages[i].alt
     }));
 }
@@ -555,7 +556,7 @@ export default function DomeGallery({
             overlay.style.willChange = 'transform, opacity';
             overlay.style.transformOrigin = 'top left';
             overlay.style.transition = `transform ${enlargeTransitionMs}ms ease, opacity ${enlargeTransitionMs}ms ease`;
-            const rawSrc = parent.dataset.src || el.querySelector('img')?.src || '';
+            const rawSrc = parent.dataset.fullSrc || parent.dataset.src || el.querySelector('img')?.src || '';
             const img = document.createElement('img');
             img.src = rawSrc;
             overlay.appendChild(img);
@@ -676,6 +677,7 @@ export default function DomeGallery({
                                 key={`${it.x},${it.y},${i}`}
                                 className="item"
                                 data-src={it.src}
+                                data-full-src={it.fullSrc}
                                 data-offset-x={it.x}
                                 data-offset-y={it.y}
                                 data-size-x={it.sizeX}
@@ -695,7 +697,13 @@ export default function DomeGallery({
                                     onClick={onTileClick}
                                     onPointerUp={onTilePointerUp}
                                 >
-                                    <img src={it.src} draggable={false} alt={it.alt} />
+                                    <img
+                                        src={it.src}
+                                        draggable={false}
+                                        alt={it.alt}
+                                        loading="lazy"
+                                        decoding="async"
+                                    />
                                 </div>
                             </div>
                         ))}

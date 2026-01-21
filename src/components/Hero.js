@@ -112,7 +112,7 @@ export default function Hero() {
 
                 <motion.div
                     style={{
-                        opacity,
+                        opacity: opacity || 1,
                         y,
                         rotateX,
                         rotateY,
@@ -130,7 +130,7 @@ export default function Hero() {
                                     <motion.div
                                         key={words[wordIndex]}
                                         variants={letterContainerVariants}
-                                        initial="hidden"
+                                        initial={wordIndex === 0 ? "visible" : "hidden"}
                                         animate="visible"
                                         exit="exit"
                                         className="flex relative z-10"

@@ -306,9 +306,11 @@ export default function ThreeDImageRing({
                                 >
                                     {/* Image with proper object-fit */}
                                     <img
-                                        src={item.image || item}
+                                        src={item.thumb || item.image || item}
                                         alt={item.title || `Item ${index + 1}`}
                                         className="w-full h-full object-cover"
+                                        loading="lazy"
+                                        decoding="async"
                                         style={{
                                             pointerEvents: 'none',
                                         }}
